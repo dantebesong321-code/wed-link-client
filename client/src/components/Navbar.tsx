@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
+    <nav>
     <header className="bg-white border-b border-zinc-200">
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between sticky z-auto">
 
         <Link
           to="/"
@@ -19,7 +20,7 @@ export default function Navbar() {
             text-white
             px-4
             py-2
-            rounded-lg
+            rounded-md
           "
         >
           Add Vendor
@@ -27,5 +28,6 @@ export default function Navbar() {
 
       </div>
     </header>
+    </nav>
   );
 }
