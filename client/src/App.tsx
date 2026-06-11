@@ -4,6 +4,10 @@ import { Routes, Route } from "react-router";
 import './App.css'
 import HomePage from "./pages/HomePage";
 import VendorDetailPage from "./pages/VendorDetailPage";
+import EditVendorPage from "./pages/EditVendorPage";
+import VendorsPage from "./pages/VendorsPage";
+import AddVendorPage from "./pages/AddVendorPage";
+import CategoryPage from "./pages/CategoryPage";
 
 // components
 import Navbar from "./components/Navbar"
@@ -18,10 +22,13 @@ function App() {
 
     <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route
-  path="/vendors/:id"
-  element={<VendorDetailPage />}
+        <Route path="/vendors" element={<VendorsPage />}/>
+        <Route path="/vendors/:id" element={<VendorDetailPage />}/>
+        <Route path="/vendors/:id/edit" element={<EditVendorPage />} />
+        <Route path="/vendors/new" element={<AddVendorPage />}/>
+        <Route path="/categories/:id" element={<CategoryPage />}
 />
+        
       
       </Routes>
       

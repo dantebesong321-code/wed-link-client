@@ -4,7 +4,8 @@ import api from "./api";
 // GET all vendors
 export const getVendors = async () => {
   const response = await api.get("/vendors");
-  return response.data;   
+  return response.data;  
+  console.log(response) 
 };
 
 
@@ -41,6 +42,17 @@ export const deleteVendor = async (
 ) => {
   const response = await api.delete(
     `/vendors/${id}`
+  );
+
+  return response.data;
+};
+
+
+export const getVendorsByCategory = async (
+  categoryId: string
+) => {
+  const response = await api.get(
+    `/vendors/category/${categoryId}`
   );
 
   return response.data;

@@ -10,8 +10,10 @@ function SearchBar({
   value,
   onChange,
 }: SearchBarProps) {
+
+
   return (
-    <div className="searchBar max-w-3xl mx-auto mb-12">
+    <div className="justify-center searchBar max-w-3xl mx-auto mb-12">
       <div className="relative">
 
         <FiSearch

@@ -37,9 +37,9 @@ export default function InspirationCarousel() {
 ];
 
   return (
-    <section className="my-24">
+    <section className="mb-20">
 
-      <div className="text-center mb-10">
+      <div className="mb-10">
         <h2 className="text-4xl font-bold">
           Wedding Inspiration
         </h2>

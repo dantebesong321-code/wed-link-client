@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import Spinner from "../components/Spinner";
-import { getVendor, updateVendor } from "../services/vendorService";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { createVendor } from "../services/vendorService";
 
 
-interface VendorFormData {
+interface Category {
+  id: string;
+  name: string;
+}
+export interface VendorFormData {
   name: string;
   businessName: string;
   description: string;
@@ -19,7 +23,7 @@ interface VendorFormData {
   categoryId: string;
 }
 
-const initialFormState: VendorFormData = {
+const initialFormState = {
   name: "",
   businessName: "",
   description: "",
@@ -33,88 +37,84 @@ const initialFormState: VendorFormData = {
   priceRange: "",
   categoryId: "",
 };
+function AddVendorPage() {
 
-function EditVendorPage() {
-  const { id } = useParams<{ id: string }>(); 
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState<VendorFormData>(initialFormState);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const [categories, setCategories] =
+  useState<Category[]>([]);
 
 
-  useEffect(() => {
-    const fetchVendorData = async () => {
-      if (!id) return;
-      try {
-        setLoading(true);
-        const data = await getVendor(id);
-        
-      
-        setFormData({
-          ...initialFormState,
-          ...data,
-        });
-      } catch (err) {
-        console.error("Failed to fetch vendor data:", err);
-        setError("Could not load vendor details.");
-      } finally {
-        setLoading(false);
-      }
+useEffect(() => {
+  const fetchCategories =
+    async () => {
+      const response =
+        await fetch(
+          "http://localhost:5005/categories"
+        );
+
+      const data =
+        await response.json();
+
+      setCategories(data);
     };
 
-    fetchVendorData();
-  }, [id]);
+  fetchCategories();
+}, []);
+
+
+
+const navigate = useNavigate();
+const [formData, setFormData] =
+  useState(initialFormState);
+
+const [loading, setLoading] =
+  useState(false);
+
+const [error, setError] =
+  useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-
-    try {
-      await updateVendor(id, formData);
-      navigate(`/vendors/${id}`);
-    } catch (err) {
-      console.error("Failed to update vendor:", err);
-      setError("Failed to update vendor. Please try again.");
-    }
-  };
+  e: React.ChangeEvent<
+    HTMLInputElement | HTMLTextAreaElement
+  >
+) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
 
 
-  if (error) {
-    return (
-      <div className="text-center py-20 text-red-500">
-        <p>{error}</p>
-        <button 
-          onClick={() => navigate(-1)} 
-          className=" bg-zinc-100 mt-4 underline text-black"
-        >
-          Go Back
-        </button>
-      </div>
+
+
+
+
+const handleSubmit = async (
+  e: React.FormEvent
+) => {
+  e.preventDefault();
+
+  try {
+    setLoading(true);
+
+    const vendor = await createVendor(
+      formData
     );
-  }
 
-  if (loading) {
-    return (
-      <div className="text-center py-20">
-        <Spinner />
-      </div>
+    navigate(`/vendors/${vendor.id}`);
+  } catch (error) {
+    console.error(error);
+
+    setError(
+      "Failed to create vendor"
     );
+  } finally {
+    setLoading(false);
   }
+};
 
-  return (
+ return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-8">Edit Vendor</h1>
+      <h1 className="text-4xl font-bold mb-8">Add Vendor</h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -138,6 +138,43 @@ function EditVendorPage() {
             className="w-full border p-3 rounded-lg"
           />
         </div>
+        <div>
+  <label className="block text-sm font-medium mb-1">
+    Category
+  </label>
+
+  <select
+    name="categoryId"
+    value={formData.categoryId}
+    onChange={(e) =>
+      setFormData({
+        ...formData,
+        categoryId: e.target.value,
+      })
+    }
+    className="
+      w-full
+      border
+      p-3
+      rounded-lg
+      bg-white
+    "
+    required
+  >
+    <option value="">
+      Select Category
+    </option>
+
+    {categories.map((category) => (
+      <option
+        key={category.id}
+        value={category.id}
+      >
+        {category.name}
+      </option>
+    ))}
+  </select>
+</div>
 
         <div>
           <label className="block text-sm font-medium mb-1">Description</label>
@@ -244,15 +281,27 @@ function EditVendorPage() {
           />
         </div>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
-        >
-          Update Vendor
-        </button>
+       <button
+  type="submit"
+  disabled={loading}
+  className="
+    bg-black
+    text-white
+    px-6
+    py-3
+    rounded-lg
+    font-medium
+    hover:bg-gray-800
+    transition-colors
+    disabled:opacity-50
+  "
+>
+  {loading
+    ? "Creating Vendor..."
+    : "Create Vendor"}
+</button>
       </form>
     </div>
   );
 }
-
-export default EditVendorPage;
+export default AddVendorPage

@@ -5,7 +5,7 @@ import {
   FaBars,
   FaTimes,
   FaChevronDown,
-  FaHeart,
+ 
 } from "react-icons/fa";
 
 export default function Navbar() {
@@ -62,8 +62,7 @@ export default function Navbar() {
                   top-10
                   left-0
                   bg-white
-                  border
-                  rounded-xl
+                  rounded-xs
                   shadow-lg
                   w-56
                   py-2
@@ -80,14 +79,14 @@ export default function Navbar() {
                   to="/categories/florist"
                   className="block px-4 py-2 hover:bg-zinc-100"
                 >
-                  Florists
+                  Decoration
                 </Link>
 
                 <Link
                   to="/categories/planner"
                   className="block px-4 py-2 hover:bg-zinc-100"
                 >
-                  Planners
+                  DJ
                 </Link>
 
                 <Link
@@ -109,7 +108,7 @@ export default function Navbar() {
               hover:text-zinc-500
             "
           >
-            <FaHeart />
+            {/* <FaHeart /> */}
             Favorites
           </Link>
 
@@ -195,21 +194,21 @@ export default function Navbar() {
                 </Link>
 
                 <Link
-                  to="/categories/florist"
+                  to="/categories/decoration"
                   onClick={() =>
                     setMenuOpen(false)
                   }
                 >
-                  Florists
+                 Decoration
                 </Link>
 
                 <Link
-                  to="/categories/planner"
+                  to="/categories/dj"
                   onClick={() =>
                     setMenuOpen(false)
                   }
                 >
-                  Planners
+                 DJ
                 </Link>
 
                 <Link
@@ -231,7 +230,7 @@ export default function Navbar() {
               }
               className="flex items-center gap-2"
             >
-              <FaHeart />
+           
               Favorites
             </Link>
 

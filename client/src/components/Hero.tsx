@@ -1,4 +1,5 @@
 import HeroVideo from "../assets/hero-video.mp4"
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
@@ -17,10 +18,10 @@ export default function Hero() {
           </h1>
 
           <p className="text-white/90 mt-4 max-w-2xl text-lg">
-            Discover photographers, florists, venues and planners
-            for your perfect day.
+            Discover photographers, makeup artists, venues and DJs
+            for your special day.
           </p>
-
+          <Link to={"/vendors"}>
           <button
             className="
               mt-8
@@ -29,12 +30,12 @@ export default function Hero() {
               px-6
               py-3
               rounded-md
-              hover:opacity-90
-              transition
+              hover:bg-zinc-900
             "
           >
             Browse Vendors
           </button>
+          </Link>
 
         </div>
       </div>

@@ -17,6 +17,7 @@ export default function VendorCard({
       className="
       bg-white
       rounded-2xl
+      h-130
       overflow-hidden
       shadow-sm
       hover:shadow-lg
@@ -30,7 +31,8 @@ export default function VendorCard({
         src={vendor.imageUrl}
         alt={vendor.businessName}
         className="
-          w-full
+        
+        w-full
           h-64
           object-cover
         "
