@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function CTA() {
   return (
     <section
@@ -20,6 +22,7 @@ export default function CTA() {
         build your dream wedding.
       </p>
 
+      <Link to= {"/vendors"}>
       <button
         className="
         mt-8
@@ -34,6 +37,7 @@ export default function CTA() {
       >
         Explore Vendors for free
       </button>
+      </Link>
     </section>
   );
 }

@@ -12,7 +12,7 @@ function Footer() {
       text-center
       text-zinc-500
     ">
-      WedLink © 2026
+      WedLink by Dante Besong © 2026
     </div>
 
     </footer>

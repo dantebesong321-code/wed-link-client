@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import api from "../services/api";
 import { createVendor } from "../services/vendorService";
-
 
 interface Category {
   id: string;
   name: string;
 }
-export interface VendorFormData {
+
+interface VendorFormData {
   name: string;
   businessName: string;
   description: string;
@@ -23,7 +24,7 @@ export interface VendorFormData {
   categoryId: string;
 }
 
-const initialFormState = {
+const initialFormState: VendorFormData = {
   name: "",
   businessName: "",
   description: "",
@@ -37,271 +38,359 @@ const initialFormState = {
   priceRange: "",
   categoryId: "",
 };
-function AddVendorPage() {
 
-const [categories, setCategories] =
-  useState<Category[]>([]);
+export default function AddVendorPage() {
+  const navigate = useNavigate();
 
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [formData, setFormData] =
+    useState<VendorFormData>(initialFormState);
 
-useEffect(() => {
-  const fetchCategories =
-    async () => {
-      const response =
-        await fetch(
-          "http://localhost:5005/categories"
-        );
+  const [loading, setLoading] =
+    useState(false);
 
-      const data =
-        await response.json();
+  const [error, setError] =
+    useState<string | null>(null);
 
-      setCategories(data);
+  /*
+  ==========================
+  FETCH CATEGORIES
+  ==========================
+  */
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await api.get("/categories");
+
+        setCategories(response.data);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-  fetchCategories();
-}, []);
+    fetchCategories();
+  }, []);
 
-
-
-const navigate = useNavigate();
-const [formData, setFormData] =
-  useState(initialFormState);
-
-const [loading, setLoading] =
-  useState(false);
-
-const [error, setError] =
-  useState<string | null>(null);
+  /*
+  ==========================
+  INPUT CHANGES
+  ==========================
+  */
 
   const handleChange = (
-  e: React.ChangeEvent<
-    HTMLInputElement | HTMLTextAreaElement
-  >
-) => {
-  setFormData({
-    ...formData,
-    [e.target.name]: e.target.value,
-  });
-};
+    e: React.ChangeEvent<
+      HTMLInputElement |
+      HTMLTextAreaElement |
+      HTMLSelectElement
+    >
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
+ 
 
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
 
+    try {
+      setLoading(true);
+      setError(null);
 
+      const vendor = await createVendor(formData);
 
+      navigate(`/vendors/${vendor.id}`);
+    } catch (error) {
+      console.error(error);
 
-const handleSubmit = async (
-  e: React.FormEvent
-) => {
-  e.preventDefault();
+      setError(
+        "Failed to create vendor. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  try {
-    setLoading(true);
-
-    const vendor = await createVendor(
-      formData
-    );
-
-    navigate(`/vendors/${vendor.id}`);
-  } catch (error) {
-    console.error(error);
-
-    setError(
-      "Failed to create vendor"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-
- return (
+  return (
     <div className="max-w-4xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-8">Add Vendor</h1>
+      <h1 className="text-4xl font-bold mb-2">
+        Add Vendor
+      </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <p className="text-zinc-500 mb-8">
+        Create a new wedding vendor profile.
+      </p>
+
+      {error && (
+        <div className="mb-6 p-4 rounded-lg border border-red-200 bg-red-50 text-red-600">
+          {error}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-6"
+      >
+        
         <div>
-          <label className="block text-sm font-medium mb-1">Owner Name</label>
+          <label className="block text-sm font-medium mb-2">
+            Owner Name
+          </label>
+
           <input
+            type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            placeholder="Owner Name"
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-zinc-200 p-3 rounded-lg"
+            required
           />
         </div>
 
+       
         <div>
-          <label className="block text-sm font-medium mb-1">Business Name</label>
+          <label className="block text-sm font-medium mb-2">
+            Business Name
+          </label>
+
           <input
+            type="text"
             name="businessName"
             value={formData.businessName}
             onChange={handleChange}
-            placeholder="Business Name"
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-zinc-200 p-3 rounded-lg"
+            required
           />
         </div>
+
+        {/* Category Dropdown */}
         <div>
-  <label className="block text-sm font-medium mb-1">
-    Category
-  </label>
+          <label className="block text-sm font-medium mb-2">
+            Category
+          </label>
 
-  <select
-    name="categoryId"
-    value={formData.categoryId}
-    onChange={(e) =>
-      setFormData({
-        ...formData,
-        categoryId: e.target.value,
-      })
-    }
-    className="
-      w-full
-      border
-      p-3
-      rounded-lg
-      bg-white
-    "
-    required
-  >
-    <option value="">
-      Select Category
-    </option>
+          <select
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleChange}
+            className="
+              w-full
+              border
+              border-zinc-200
+              p-3
+              rounded-lg
+              bg-white
+            "
+            required
+          >
+            <option value="">
+              Select Category
+            </option>
 
-    {categories.map((category) => (
-      <option
-        key={category.id}
-        value={category.id}
-      >
-        {category.name}
-      </option>
-    ))}
-  </select>
-</div>
+            {categories.map((category) => (
+              <option
+                key={category.id}
+                value={category.id}
+              >
+                {category.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
+        {/* Description */}
         <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
+          <label className="block text-sm font-medium mb-2">
+            Description
+          </label>
+
           <textarea
+            rows={4}
             name="description"
             value={formData.description}
             onChange={handleChange}
-            placeholder="Description"
-            rows={4}
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-zinc-200 p-3 rounded-lg"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Email</label>
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full border p-3 rounded-lg"
-          />
+        {/* Email + Phone */}
+        <div className="grid md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Email
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full border border-zinc-200 p-3 rounded-lg"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">
+              Phone
+            </label>
+
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full border border-zinc-200 p-3 rounded-lg"
+            />
+          </div>
         </div>
 
+        {/* Website */}
         <div>
-          <label className="block text-sm font-medium mb-1">Phone</label>
-          <input
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone"
-            className="w-full border p-3 rounded-lg"
-          />
-        </div>
+          <label className="block text-sm font-medium mb-2">
+            Website
+          </label>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Website</label>
           <input
-            name="website"
             type="url"
+            name="website"
             value={formData.website}
             onChange={handleChange}
-            placeholder="Website"
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-zinc-200 p-3 rounded-lg"
           />
         </div>
 
+        {/* Address */}
         <div>
-          <label className="block text-sm font-medium mb-1">Address</label>
+          <label className="block text-sm font-medium mb-2">
+            Address
+          </label>
+
           <input
+            type="text"
             name="address"
             value={formData.address}
             onChange={handleChange}
-            placeholder="Address"
-            className="w-full border p-3 rounded-lg"
+            className="w-full border border-zinc-200 p-3 rounded-lg"
           />
         </div>
 
+        {/* City + Country */}
         <div className="grid md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium mb-1">City</label>
+            <label className="block text-sm font-medium mb-2">
+              City
+            </label>
+
             <input
+              type="text"
               name="city"
               value={formData.city}
               onChange={handleChange}
-              placeholder="City"
-              className="w-full border p-3 rounded-lg"
+              className="w-full border border-zinc-200 p-3 rounded-lg"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Country</label>
+            <label className="block text-sm font-medium mb-2">
+              Country
+            </label>
+
             <input
+              type="text"
               name="country"
               value={formData.country}
               onChange={handleChange}
-              placeholder="Country"
-              className="w-full border p-3 rounded-lg"
+              className="w-full border border-zinc-200 p-3 rounded-lg"
             />
           </div>
         </div>
 
+        {/* Image URL */}
         <div>
-          <label className="block text-sm font-medium mb-1">Image URL</label>
+          <label className="block text-sm font-medium mb-2">
+            Image URL
+          </label>
+
           <input
+            type="text"
             name="imageUrl"
             value={formData.imageUrl}
             onChange={handleChange}
-            placeholder="Image URL"
-            className="w-full border p-3 rounded-lg"
+            placeholder="https://..."
+            className="w-full border border-zinc-200 p-3 rounded-lg"
           />
+
+          {formData.imageUrl && (
+            <img
+              src={formData.imageUrl}
+              alt="Preview"
+              className="
+                mt-4
+                w-full
+                h-60
+                object-cover
+                rounded-xl
+              "
+            />
+          )}
         </div>
 
+        {/* Price Range */}
         <div>
-          <label className="block text-sm font-medium mb-1">Price Range</label>
-          <input
+          <label className="block text-sm font-medium mb-2">
+            Price Range
+          </label>
+
+          <select
             name="priceRange"
             value={formData.priceRange}
             onChange={handleChange}
-            placeholder="Price Range"
-            className="w-full border p-3 rounded-lg"
-          />
+            className="
+              w-full
+              border
+              border-zinc-200
+              p-3
+              rounded-lg
+              bg-white
+            "
+          >
+            <option value="">
+              Select Price Range
+            </option>
+
+            <option value="$">$ Budget</option>
+            <option value="$$">$$ Standard</option>
+            <option value="$$$">$$$ Premium</option>
+            <option value="$$$$">$$$$ Luxury</option>
+          </select>
         </div>
 
-       <button
-  type="submit"
-  disabled={loading}
-  className="
-    bg-black
-    text-white
-    px-6
-    py-3
-    rounded-lg
-    font-medium
-    hover:bg-gray-800
-    transition-colors
-    disabled:opacity-50
-  "
->
-  {loading
-    ? "Creating Vendor..."
-    : "Create Vendor"}
-</button>
+        {/* Submit */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="
+            w-full
+            bg-black
+            text-white
+            py-4
+            rounded-lg
+            font-medium
+            hover:bg-zinc-800
+            transition
+            disabled:opacity-50
+          "
+        >
+          {loading
+            ? "Creating Vendor..."
+            : "Create Vendor"}
+        </button>
       </form>
     </div>
   );
 }
-export default AddVendorPage

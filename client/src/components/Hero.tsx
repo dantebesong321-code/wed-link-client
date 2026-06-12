@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function Hero() {
   return (
-    <section className="max-w-6xl mx-auto mb-16 px-4">
+    <section className="max-w-6xl mx-auto mb-8 px-4">
       <div className="relative overflow-hidden rounded-3xl shadow-sm" >
 
       <div className="hero-video" >

@@ -4,6 +4,8 @@ import { getVendor } from "../services/vendorService";
 import { GrLanguage, GrMap, GrPhone, GrCurrency } from "react-icons/gr";
 import { deleteVendor } from "../services/vendorService";
 import { Link, useNavigate } from "react-router-dom";
+import Spinner from "../components/Spinner";
+import Map from "../components/Map";
 
 
 
@@ -34,7 +36,7 @@ const handleDelete = async () => {
 
 
 if (!vendor) {
-  return <h2>Loading...</h2>;
+  return <Spinner/>
 }
 
 return (
@@ -63,6 +65,12 @@ return (
         {vendor.description}
       </p>
       </div>
+
+      <Map
+  address={vendor.address}
+  city={vendor.city}
+  country={vendor.country}
+/>
 
       <div className="flex items-center gap-3 mt-6">
         <GrMap size={18} /> {vendor.city}

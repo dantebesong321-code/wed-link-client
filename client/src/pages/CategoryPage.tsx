@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Spinner from "../components/Spinner";
 
 import {
   getCategory,
@@ -48,7 +49,7 @@ export default function CategoryPage() {
   }, [id]);
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return  <Spinner/>
   }
 
   return (
