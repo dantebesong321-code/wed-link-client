@@ -36,80 +36,9 @@ export default function Navbar() {
             About
           </Link>
 
-          {/* Categories */}
-
-          <div className="relative">
-
-            <button
-              onClick={() =>
-                setCategoryOpen(!categoryOpen)
-              }
-              className="
-                flex
-                items-center
-                gap-2
-                hover:text-zinc-500
-              "
-            >
-              Categories
-              <FaChevronDown size={12} />
-            </button>
-
-            {categoryOpen && (
-              <div
-                className="
-                  absolute
-                  top-10
-                  left-0
-                  bg-white
-                  rounded-xs
-                  shadow-lg
-                  w-56
-                  py-2
-                "
-              >
-                <Link
-                  to="/categories/photography"
-                  className="block px-4 py-2 hover:bg-zinc-100"
-                >
-                  Photography
-                </Link>
-
-                <Link
-                  to="/categories/florist"
-                  className="block px-4 py-2 hover:bg-zinc-100"
-                >
-                  Decoration
-                </Link>
-
-                <Link
-                  to="/categories/planner"
-                  className="block px-4 py-2 hover:bg-zinc-100"
-                >
-                  DJ
-                </Link>
-
-                <Link
-                  to="/categories/venue"
-                  className="block px-4 py-2 hover:bg-zinc-100"
-                >
-                  Venues
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <Link
-            to="/favorites"
-            className="
-              flex
-              items-center
-              gap-2
-              hover:text-zinc-500
-            "
-          >
-            {/* <FaHeart /> */}
-            Favorites
+  
+          <Link to="/vendors" className="hover:text-zinc-500 transition">
+          Vendors
           </Link>
 
           <Link
