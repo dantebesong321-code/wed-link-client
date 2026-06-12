@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import {
   FaBars,
   FaTimes,
-  FaChevronDown,
+
  
 } from "react-icons/fa";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [categoryOpen, setCategoryOpen] = useState(false);
+
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-zinc-200">
