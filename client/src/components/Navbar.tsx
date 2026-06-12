@@ -166,73 +166,11 @@ export default function Navbar() {
               About
             </Link>
 
-            <button
-              onClick={() =>
-                setCategoryOpen(!categoryOpen)
-              }
-              className="
-                flex
-                justify-between
-                items-center
-              "
-            >
-              Categories
-
-              <FaChevronDown />
-            </button>
-
-            {categoryOpen && (
-              <div className="pl-4 flex flex-col gap-2">
-
-                <Link
-                  to="/categories/photography"
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
-                >
-                  Photography
-                </Link>
-
-                <Link
-                  to="/categories/decoration"
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
-                >
-                 Decoration
-                </Link>
-
-                <Link
-                  to="/categories/dj"
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
-                >
-                 DJ
-                </Link>
-
-                <Link
-                  to="/categories/venue"
-                  onClick={() =>
-                    setMenuOpen(false)
-                  }
-                >
-                  Venues
-                </Link>
-
-              </div>
-            )}
-
-            <Link
-              to="/favorites"
-              onClick={() =>
-                setMenuOpen(false)
-              }
-              className="flex items-center gap-2"
-            >
            
-              Favorites
-            </Link>
+
+             <Link to="/vendors" className="hover:text-zinc-500 transition">
+          Vendors
+          </Link>
 
             <Link
               to="/vendors/new"

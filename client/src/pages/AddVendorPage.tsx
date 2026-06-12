@@ -52,11 +52,7 @@ export default function AddVendorPage() {
   const [error, setError] =
     useState<string | null>(null);
 
-  /*
-  ==========================
-  FETCH CATEGORIES
-  ==========================
-  */
+  
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -72,12 +68,7 @@ export default function AddVendorPage() {
     fetchCategories();
   }, []);
 
-  /*
-  ==========================
-  INPUT CHANGES
-  ==========================
-  */
-
+ 
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement |
