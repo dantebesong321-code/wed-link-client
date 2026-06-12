@@ -15,7 +15,7 @@ function Spinner() {
 
   return (
     <div className="sweet-loading min-h-svh flex justify-center items-center">
-      <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
+      <button onClick={() => setLoading(!loading)}></button>
       <input
         value={color}
         onChange={(input) => setColor(input.target.value)}
