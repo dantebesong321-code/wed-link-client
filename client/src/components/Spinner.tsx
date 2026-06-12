@@ -11,16 +11,16 @@ const override: CSSProperties = {
 
 function Spinner() {
   let [loading, setLoading] = useState(true);
-  let [color, setColor] = useState("#ffffff");
+  let [color, setColor] = useState("");
 
   return (
-    <div className="sweet-loading min-h-svh flex justify-center items-center">
+    <div className="sweet-loading min-h-svh flex  justify-center items-center">
       <button onClick={() => setLoading(!loading)}></button>
       <input
         value={color}
         onChange={(input) => setColor(input.target.value)}
-        placeholder="Black"
       />
+     
 
       <ClipLoader
         color={color}
@@ -30,6 +30,8 @@ function Spinner() {
         aria-label="Loading Spinner"
         data-testid="loader"
       />
+    
+       
     </div>
   );
 }
