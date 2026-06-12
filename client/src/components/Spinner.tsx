@@ -14,7 +14,7 @@ function Spinner() {
   let [color, setColor] = useState("#ffffff");
 
   return (
-    <div className="sweet-loading">
+    <div className="sweet-loading min-h-svh flex justify-center items-center">
       <button onClick={() => setLoading(!loading)}>Toggle Loader</button>
       <input
         value={color}

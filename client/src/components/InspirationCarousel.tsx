@@ -50,6 +50,7 @@ export default function InspirationCarousel() {
       </div>
 
       <Swiper
+      
         modules={[Navigation,
     Pagination,
     Autoplay,]}

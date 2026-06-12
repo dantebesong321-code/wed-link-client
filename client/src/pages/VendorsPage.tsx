@@ -56,7 +56,7 @@ export default function VendorsPage() {
   });
 
   if (loading) {
-    return <Spinner />;
+    return <Spinner />
   }
 
   return (

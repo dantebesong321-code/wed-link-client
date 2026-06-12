@@ -8,6 +8,8 @@ import EditVendorPage from "./pages/EditVendorPage";
 import VendorsPage from "./pages/VendorsPage";
 import AddVendorPage from "./pages/AddVendorPage";
 import CategoryPage from "./pages/CategoryPage";
+import AboutPage from "./pages/AboutPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // components
 import Navbar from "./components/Navbar"
@@ -26,9 +28,10 @@ function App() {
         <Route path="/vendors/:id" element={<VendorDetailPage />}/>
         <Route path="/vendors/:id/edit" element={<EditVendorPage />} />
         <Route path="/vendors/new" element={<AddVendorPage />}/>
-        <Route path="/categories/:id" element={<CategoryPage />}
-/>
-        
+        <Route path="/categories/:id" element={<CategoryPage />}/>
+        <Route path="/about"element={<AboutPage />}/>
+    <Route path="*" element={<NotFoundPage />}
+  />        
       
       </Routes>
       
